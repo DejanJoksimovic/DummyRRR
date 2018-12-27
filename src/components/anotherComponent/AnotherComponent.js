@@ -15,7 +15,6 @@ class AnotherComponent extends Component {
 
 const mapStateToProps = state => {
     return {
-        organizationId: state.organizationId,
         dummyText: state.dummyText
     };
 };
