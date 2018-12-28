@@ -11,6 +11,7 @@ import { someId } from './reducers/SomeId';
 import { dummyText } from './reducers/DummyText';
 
 import { load } from './Actions/Actions';
+import { Provider as HistoryProvider } from './components/navigation/Navigation';
 
 import NavigationConnector, { navigationRoutePath } from './components/navigation/Navigation';
 import ComponentConnector, { componentRoutePath } from './components/component/Component';
@@ -38,13 +39,15 @@ const ConnectedAnotherComponent = AnotherComponentConnector(connect);
 
 ReactDOM.render(
     <Provider store={store}>
-        <ConnectedRouter history={history}>
-            <Switch>
-                <Route exact path={navigationRoutePath} component={ConnectedNavigation} />
-                <Route exact path={componentRoutePath} component={ConnectedComponent} />
-                <Route exact path={anotherComponentRoutePath} component={ConnectedAnotherComponent} />
-            </Switch>
-        </ConnectedRouter>
+        <HistoryProvider value={history}>
+            <ConnectedRouter history={history}>
+                <Switch>
+                    <Route exact path={navigationRoutePath} component={ConnectedNavigation} />
+                    <Route exact path={componentRoutePath} component={ConnectedComponent} />
+                    <Route exact path={anotherComponentRoutePath} component={ConnectedAnotherComponent} />
+                </Switch>
+            </ConnectedRouter>
+        </HistoryProvider>
     </Provider>,
     document.getElementById('root')
 );

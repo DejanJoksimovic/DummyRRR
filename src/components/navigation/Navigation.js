@@ -6,17 +6,21 @@ import MenuItem from '@material-ui/core/MenuItem';
 import {componentRoutePath} from '../component/Component'
 import {anotherComponentRoutePath} from '../anotherComponent/AnotherComponent'
 
+const context = React.createContext('history');
+export const {Provider, Consumer} = context;
+
 class Navigation extends Component {
 
-    navigateTo = route => () => {
-        window.location = route;
+    navigateTo = history => route => () => {
+        history.push(route);
     }
 
     render() {
+        const navigateTo = this.navigateTo(this.props.history);
         return (
             <MenuList>
-                <MenuItem onClick={this.navigateTo(componentRoutePath)}>SomeId in Button Component</MenuItem>
-                <MenuItem onClick={this.navigateTo(anotherComponentRoutePath)}>Dummy Text in Button Component</MenuItem>
+                <MenuItem onClick={navigateTo(componentRoutePath)}>SomeId in Button Component</MenuItem>
+                <MenuItem onClick={navigateTo(anotherComponentRoutePath)}>Dummy Text in Button Component</MenuItem>
             </MenuList>
         );
     }
@@ -33,7 +37,12 @@ const mapDispatchToProps = () => {
     return {}
 }
 
-const NavigationConnector = connect => connect(mapStateToProps, mapDispatchToProps)(Navigation);
+const connectNavigation = () => 
+    (<Consumer>
+        {history => <Navigation history={history} />}
+    </Consumer>);
+
+const NavigationConnector = connect => connect(mapStateToProps, mapDispatchToProps)(connectNavigation)
 
 export default NavigationConnector;
 export const navigationRoutePath = '/app';
