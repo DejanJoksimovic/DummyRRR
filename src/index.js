@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { applyMiddleware, combineReducers, createStore, compose } from 'redux';
 import { connect, Provider } from 'react-redux';
 import { ConnectedRouter, connectRouter } from 'connected-react-router';
-import { Route, Switch } from 'react-router';
+import {Redirect, Route, Switch} from 'react-router-dom';
 import thunkMiddleware from 'redux-thunk';
 import { createBrowserHistory } from 'history';
 
@@ -43,8 +43,15 @@ ReactDOM.render(
             <ConnectedRouter history={history}>
                 <Switch>
                     <Route exact path={navigationRoutePath} component={ConnectedNavigation} />
-                    <Route exact path={componentRoutePath} component={ConnectedComponent} />
-                    <Route exact path={anotherComponentRoutePath} component={ConnectedAnotherComponent} />
+                    <Route path={'/app/(component|another)'} render={() => (
+                        <Switch>
+                            <Route exact path={componentRoutePath} component={ConnectedComponent} />
+                            <Route exact path={anotherComponentRoutePath} component={ConnectedAnotherComponent} />
+                        </Switch>
+                    )}/>
+                    <Route path="/" render={() => (
+                        <Redirect to={navigationRoutePath}/>
+                    )}/>
                 </Switch>
             </ConnectedRouter>
         </HistoryProvider>
