@@ -10,7 +10,7 @@ import { createBrowserHistory } from 'history';
 import { someId } from './reducers/SomeId';
 import { dummyText } from './reducers/DummyText';
 
-import { load } from './Actions/Actions';
+import { load } from './actions/Actions';
 import { Provider as HistoryProvider } from './components/navigation/Navigation';
 
 import NavigationConnector, { navigationRoutePath } from './components/navigation/Navigation';

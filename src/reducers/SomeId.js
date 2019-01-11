@@ -1,4 +1,4 @@
-import {SET_SOME_ID} from '../Actions/ActionsTypes';
+import {SET_SOME_ID} from '../actions/ActionsTypes';
 
 export function someId(state = null, action) {
     switch (action.type) {

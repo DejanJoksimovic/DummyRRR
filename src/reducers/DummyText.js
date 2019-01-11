@@ -1,4 +1,4 @@
-import {SET_DUMMY_TEXT} from '../Actions/ActionsTypes';
+import {SET_DUMMY_TEXT} from '../actions/ActionsTypes';
 
 export function dummyText(state = null, action) {
     switch (action.type) {

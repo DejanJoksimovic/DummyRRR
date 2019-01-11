@@ -1,4 +1,4 @@
-import {SET_SOME_ID, SET_DUMMY_TEXT} from '../Actions/ActionsTypes';
+import {SET_SOME_ID, SET_DUMMY_TEXT} from '../actions/ActionsTypes';
 import fapi from '../services/FAPIService'
 
 export function createSetSomeId(someId) {
