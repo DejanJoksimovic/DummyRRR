@@ -12,6 +12,7 @@ class ComponentClass extends Component {
         );
     }
 }
+// test
 
 const mapStateToProps = state => {
     return {
