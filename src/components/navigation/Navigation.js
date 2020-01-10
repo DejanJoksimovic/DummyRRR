@@ -1,48 +1,24 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
 
-import {componentRoutePath} from '../component/Component'
 import {anotherComponentRoutePath} from '../anotherComponent/AnotherComponent'
+import { useHistory } from 'react-router';
 
-const context = React.createContext('history');
-export const {Provider, Consumer} = context;
+export const Navigation = () => {
 
-class Navigation extends Component {
+    const history = useHistory();
 
-    navigateTo = history => route => () => {
-        history.push(route);
-    }
+    const navigateTo = route => () => history.push(route);
 
-    render() {
-        const navigateTo = this.navigateTo(this.props.history);
+        const id = 3;
         return (
             <MenuList>
-                <MenuItem onClick={navigateTo(componentRoutePath)}>SomeId in Button Component</MenuItem>
+                <MenuItem onClick={navigateTo(`/app/component/${id}`)}>SomeId in Button Component</MenuItem>
                 <MenuItem onClick={navigateTo(anotherComponentRoutePath)}>Dummy Text in Button Component</MenuItem>
             </MenuList>
         );
-    }
 }
 
-
-
-const mapStateToProps = () => {
-    return {
-    };
-};
-
-const mapDispatchToProps = () => {
-    return {}
-}
-
-const connectNavigation = () => 
-    (<Consumer>
-        {history => <Navigation history={history} />}
-    </Consumer>);
-
-const NavigationConnector = connect => connect(mapStateToProps, mapDispatchToProps)(connectNavigation)
-
-export default NavigationConnector;
 export const navigationRoutePath = '/app';

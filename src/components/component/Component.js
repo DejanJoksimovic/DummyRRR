@@ -1,30 +1,17 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { useSelector } from 'react-redux'
 import Button from '@material-ui/core/Button';
 
-class ComponentClass extends Component {
-
-    render() {
-        const someId = this.props.someId
-        return (
+export const HooksComponent = props => {
+    const someId = useSelector(state => state.someId);
+    return (
+        <>
+            {props.match.params.id}
             <Button variant="contained" color="primary">
                 {someId}
             </Button>
-        );
-    }
-}
-// test
-
-const mapStateToProps = state => {
-    return {
-        someId: state.someId
-    };
-};
-
-const mapDispatchToProps = () => {
-    return {}
+        </>
+    );
 }
 
-const ComponentConnector = connect => connect(mapStateToProps, mapDispatchToProps)(ComponentClass);
-
-export default ComponentConnector;
-export const componentRoutePath = '/app/component';
+export const componentRoutePath = '/app/component/:id';

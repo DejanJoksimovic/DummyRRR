@@ -1,26 +1,21 @@
 import React from 'react';
 import ReactDOM from "react-dom";
 import { applyMiddleware, combineReducers, createStore, compose } from 'redux';
-import { connect, Provider } from 'react-redux';
-import { ConnectedRouter, connectRouter } from 'connected-react-router';
-import {Redirect, Route, Switch} from 'react-router-dom';
+import { Provider } from 'react-redux';
+import {Redirect, Route, Switch, BrowserRouter} from 'react-router-dom';
 import thunkMiddleware from 'redux-thunk';
-import { createBrowserHistory } from 'history';
 
 import { someId } from './reducers/SomeId';
 import { dummyText } from './reducers/DummyText';
 
 import { load } from './actions/Actions';
-import { Provider as HistoryProvider } from './components/navigation/Navigation';
 
-import NavigationConnector, { navigationRoutePath } from './components/navigation/Navigation';
-import ComponentConnector, { componentRoutePath } from './components/component/Component';
-import AnotherComponentConnector, { anotherComponentRoutePath } from './components/anotherComponent/AnotherComponent';
-
-const history = createBrowserHistory();
+import { navigationRoutePath, Navigation } from './components/navigation/Navigation';
+import { componentRoutePath, HooksComponent } from './components/component/Component';
+import { anotherComponentRoutePath, AnotherComponent } from './components/anotherComponent/AnotherComponent';
 
 const app = combineReducers({
-    someId, dummyText, router: connectRouter(history)
+    someId, dummyText
 });
 
 const store = createStore(
@@ -33,28 +28,22 @@ const store = createStore(
 
 store.dispatch(load());
 
-const ConnectedNavigation = NavigationConnector(connect);
-const ConnectedComponent = ComponentConnector(connect);
-const ConnectedAnotherComponent = AnotherComponentConnector(connect);
-
 ReactDOM.render(
     <Provider store={store}>
-        <HistoryProvider value={history}>
-            <ConnectedRouter history={history}>
-                <Switch>
-                    <Route exact path={navigationRoutePath} component={ConnectedNavigation} />
-                    <Route path={'/app/(component|another)'} render={() => (
-                        <Switch>
-                            <Route exact path={componentRoutePath} component={ConnectedComponent} />
-                            <Route exact path={anotherComponentRoutePath} component={ConnectedAnotherComponent} />
-                        </Switch>
-                    )}/>
-                    <Route path="/" render={() => (
-                        <Redirect to={navigationRoutePath}/>
-                    )}/>
-                </Switch>
-            </ConnectedRouter>
-        </HistoryProvider>
+        <BrowserRouter>
+            <Switch>
+                <Route exact path={navigationRoutePath} component={Navigation} />
+                <Route path={'/app/(component|another)'} render={() => (
+                    <Switch>
+                        <Route exact path={componentRoutePath} component={HooksComponent} />
+                        <Route exact path={anotherComponentRoutePath} component={AnotherComponent} />
+                    </Switch>
+                )} />
+                <Route path="/" render={() => (
+                    <Redirect to={navigationRoutePath} />
+                )} />
+            </Switch>
+        </BrowserRouter>
     </Provider>,
     document.getElementById('root')
 );
