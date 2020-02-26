@@ -1,2 +1,2 @@
-export const SET_SOME_ID = 'SET_SOME_ID';
-export const SET_DUMMY_TEXT = 'SET_DUMMY_TEXT';
+export const SET_TODO = 'SET_TODO';
+export const SET_SHOPPING_LIST = 'SET_SHOPPING_LIST';

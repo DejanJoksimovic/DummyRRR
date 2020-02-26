@@ -5,17 +5,16 @@ import { Provider } from 'react-redux';
 import {Redirect, Route, Switch, BrowserRouter} from 'react-router-dom';
 import thunkMiddleware from 'redux-thunk';
 
-import { someId } from './reducers/SomeId';
-import { dummyText } from './reducers/DummyText';
-
-import { load } from './actions/Actions';
+import { todo } from './reducers/Todo';
+import { shoppingList } from './reducers/ShoppingList';
 
 import { navigationRoutePath, Navigation } from './components/navigation/Navigation';
-import { componentRoutePath, HooksComponent } from './components/component/Component';
-import { anotherComponentRoutePath, AnotherComponent } from './components/anotherComponent/AnotherComponent';
+import { todoRoutePath, Todo } from './components/todo/Todo';
+import { shoppingListRoutePath, ShoppingList } from './components/shoppingList/ShoppingList';
+import { Typography } from '@material-ui/core';
 
 const app = combineReducers({
-    someId, dummyText
+    todo, shoppingList
 });
 
 const store = createStore(
@@ -26,17 +25,18 @@ const store = createStore(
     )
 );
 
-store.dispatch(load());
-
 ReactDOM.render(
     <Provider store={store}>
         <BrowserRouter>
+            <Typography variant="h4" component="h1" gutterBottom>
+                Demo App
+            </Typography>
             <Switch>
                 <Route exact path={navigationRoutePath} component={Navigation} />
-                <Route path={'/app/(component|another)'} render={() => (
+                <Route path={'/app/(todo|shoppingList)'} render={() => (
                     <Switch>
-                        <Route exact path={componentRoutePath} component={HooksComponent} />
-                        <Route exact path={anotherComponentRoutePath} component={AnotherComponent} />
+                        <Route exact path={todoRoutePath} component={Todo} />
+                        <Route exact path={shoppingListRoutePath} component={ShoppingList} />
                     </Switch>
                 )} />
                 <Route path="/" render={() => (

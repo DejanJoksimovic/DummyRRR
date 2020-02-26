@@ -1,49 +1,54 @@
-import {SET_SOME_ID, SET_DUMMY_TEXT} from '../actions/ActionsTypes';
-import fapi from '../services/FAPIService'
-import expressAppService from '../services/expressAppService'
+import {SET_TODO, SET_SHOPPING_LIST} from '../actions/ActionsTypes';
+import api from '../services/ApiService';
+import convert from 'xml-js';
 
-export function createSetSomeId(someId) {
+export function createSetTodo(todo) {
     return {
-        type: SET_SOME_ID,
-        payload: {someId}
+        type: SET_TODO,
+        payload: {todo}
     };
 }
 
-export function createSetDummyText(dummyText) {
+export function createSetShoppingList(shoppingList) {
     return {
-        type: SET_DUMMY_TEXT,
-        payload: {dummyText}
+        type: SET_SHOPPING_LIST,
+        payload: {shoppingList}
     };
 }
 
-export function load() {
+// parse Json
+export function loadTodo() {
     return dispatch =>
-        fapi.get('/todos/1')
+        api.get('/todos/1')
             .then(response => response.data)
-            .then(data => dispatch(createSetSomeId(data.id)) && dispatch(createSetDummyText(data.title)))
+            .then(data => dispatch(createSetTodo(data)));
 }
 
-export function getFromExpressAppService() {
+// parse XML
+// export function loadTodo() {
+//     return dispatch =>
+//         api.get('/todos/1')
+//             .then(response => JSON.parse(convert.xml2json(response.data)))
+//             // extract data
+//             .then(converted => converted.elements[0].elements[0].attributes)
+//             .then(data => dispatch(createSetTodo(data)));
+// }
+
+export function loadShoppingList() {
     return dispatch =>
-        expressAppService.get('/')
+        api.get('/shoppingList')
             .then(response => response.data)
-            .then(data => dispatch(createSetDummyText(data)))
+            .then(data => dispatch(createSetShoppingList(data.list)));
 }
-export function postFromExpressAppService() {
-    return () =>
-        expressAppService.post('/')
-            .then(response => response.data)
-            .then(data => console.log(data))
+
+export function clearShoppingList() {
+    return dispatch =>
+        dispatch(createSetShoppingList(null));
 }
-export function putFromExpressAppService() {
-    return () =>
-        expressAppService.put('/user')
-            .then(response => response.data)
-            .then(data => console.log(data))
+
+
+export function clearTodo() {
+    return dispatch =>
+        dispatch(createSetTodo(null));
 }
-export function deleteFromExpressAppService() {
-    return () =>
-        expressAppService.delete('/user')
-            .then(response => response.data)
-            .then(data => console.log(data))
-}
+
