@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button, FormControlLabel, Checkbox } from '@material-ui/core';
-import { loadShoppingList, clearShoppingList } from '../../actions/Actions';
+import { loadShoppingList, clearShoppingList } from '../../Actions/Actions';
 
 export const ShoppingList = () => {
 

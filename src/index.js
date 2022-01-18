@@ -13,6 +13,10 @@ import { todoRoutePath, Todo } from './components/todo/Todo';
 import { shoppingListRoutePath, ShoppingList } from './components/shoppingList/ShoppingList';
 import { Typography } from '@material-ui/core';
 
+import ContextExample from './components/ContextExample'
+import AnotherSeparateContextsExample from './components/AnotherSeparateContextsExample'
+import SeparateContextsExample from './components/SeparateContextsExample'
+
 const app = combineReducers({
     todo, shoppingList
 });
@@ -33,6 +37,9 @@ ReactDOM.render(
             </Typography>
             <Switch>
                 <Route exact path={navigationRoutePath} component={Navigation} />
+                <Route exact path="/separateContexts" component={SeparateContextsExample} />
+                <Route exact path="/Context" component={ContextExample} />
+                <Route exact path="/AnotherSeparateContextsExample" component={AnotherSeparateContextsExample} />
                 <Route path={'/app/(todo|shoppingList)'} render={() => (
                     <Switch>
                         <Route exact path={todoRoutePath} component={Todo} />

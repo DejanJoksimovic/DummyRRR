@@ -1,4 +1,4 @@
-import {SET_SHOPPING_LIST} from '../actions/ActionsTypes';
+import {SET_SHOPPING_LIST} from '../Actions/ActionsTypes';
 
 export function shoppingList(state = null, action) {
     switch (action.type) {

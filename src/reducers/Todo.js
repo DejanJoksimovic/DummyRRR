@@ -1,4 +1,4 @@
-import {SET_TODO} from '../actions/ActionsTypes';
+import {SET_TODO} from '../Actions/ActionsTypes';
 
 export function todo(state = null, action) {
     switch (action.type) {

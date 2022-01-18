@@ -1,6 +1,6 @@
-import {SET_TODO, SET_SHOPPING_LIST} from '../actions/ActionsTypes';
+import {SET_TODO, SET_SHOPPING_LIST} from '../Actions/ActionsTypes';
 import api from '../services/ApiService';
-import convert from 'xml-js';
+// import convert from 'xml-js';
 
 export function createSetTodo(todo) {
     return {
