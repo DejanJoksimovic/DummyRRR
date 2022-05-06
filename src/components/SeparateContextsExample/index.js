@@ -1,16 +1,11 @@
-import React, { useState } from "react";
-import IterationButtonSeparateContexts from "../IterationButtonSeparateContexts";
-import PresentationalComponentSeparateContexts from "../PresentationalComponentSeparateContexts";
-import { StateContext, SetStateContext } from "../../Contexts";
+import React from "react";
+import DashBoard from "../DashBoard";
 
 export default () => {
-    const [state, setState] = useState('test');
+  
     return (
-        <StateContext.Provider value={state}>
-            <SetStateContext.Provider value={setState}>
-                <IterationButtonSeparateContexts />
-                <PresentationalComponentSeparateContexts />
-            </SetStateContext.Provider>
-        </StateContext.Provider>
-    );
-};
+      <div className="app">
+        <DashBoard />
+      </div>
+    )
+  }

@@ -1,8 +1,8 @@
 import React from "react"
 import TopNav from "../TopNav"
 import Page from '../Page';
-import {UserProvider} from '../UserProvider';
-// import {UserProvider} from '../UserProviderNotSeparated';
+// import {UserProvider} from '../UserProvider';
+import {UserProvider} from '../UserProviderNotSeparated';
 
 export default () => {
     return (
