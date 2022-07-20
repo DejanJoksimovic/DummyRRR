@@ -37,9 +37,9 @@ ReactDOM.render(
             </Typography>
             <Switch>
                 <Route exact path={navigationRoutePath} component={Navigation} />
-                <Route exact path="/SeparateContextsExample" component={SeparateContextsExample} />
                 <Route exact path="/MemoExample" component={MemoParrentExample} />
                 <Route exact path="/CallbackExample" component={CallbackExample} />
+                <Route exact path="/SeparateContextsExample" component={SeparateContextsExample} />
                 <Route path={'/app/(todo|shoppingList)'} render={() => (
                     <Switch>
                         <Route exact path={todoRoutePath} component={Todo} />

@@ -1,11 +1,11 @@
 import React from "react";
-import DashBoard from "../DashBoard";
+import Main from "../Main";
 
 export default () => {
   
     return (
       <div className="app">
-        <DashBoard />
+        <Main />
       </div>
     )
   }

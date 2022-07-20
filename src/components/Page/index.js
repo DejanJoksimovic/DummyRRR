@@ -1,7 +1,12 @@
 import React from "react"
-import Profile from "../Profile"
+import { UserContext } from '../UserProvider';
+// import { UserContext } from '../UserProviderNotSeparated';
 
 export default () => {
-  console.log('rerender page')
-    return <Profile />
+  console.log('rerender Page')
+    const userDetails = React.useContext(UserContext);
+    // const {userDetails} = React.useContext(UserContext);
+    return <div>
+      <h1>{userDetails.username}</h1>
+      </div>
   }

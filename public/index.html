@@ -27,6 +27,99 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+    <div id="adobe-asset-browser-demo"></div>
+    <!-- local -->
+    <!-- <script type="text/javascript" src="https://cec-sdk.adobe.com/asset-browser/api.js" id="pickerjs" data-app-key="3b5bb3d71d8d43079ed59fad42170d45"></script> -->
+    <!-- prod -->
+    <!-- <script type="text/javascript" src="https://cc-static.integrations.adobe.com/asset-browser/latest/api.js" id="pickerjs" data-app-key="3b5bb3d71d8d43079ed59fad42170d45"></script> -->
+    <!-- stage -->
+    <script type="text/javascript" src="https://cc-static-stage.integrations.adobe.com/asset-browser/latest/api.js" id="pickerjs" data-app-key="3b5bb3d71d8d43079ed59fad42170d45"></script>
+    <script type="text/javascript">
+      window.createAdobeAssetBrowser = (config) => {
+        // Create browser component instance
+        const assetBrowser = new AdobeAssetBrowser({
+          accessToken: config.accessToken,
+          clientId: config.clientId,
+          // redirectUrl: `${config.redirectUrl}?clientId=${config.clientId}`
+        });
+  
+        const buttonTrigger = assetBrowser.addStyledPickerButton(document.getElementById("adobe-asset-browser-demo"));
+  
+        const maxSelectable = Number(config.maxSelectable);
+        const showCategoryHeader = config.showCategoryHeader === "on" ? true : false;
+        const availableFonts = config.availableFonts?.split(', ');
+  
+        // button that opens Browser modal
+        buttonTrigger.onclick = () =>
+          assetBrowser.open({
+            maxSelectable,
+            showCategories: config.showCategories,
+            showCategoryHeader /* you can hide the header if there is only one category to show */,
+            availableFonts,
+          });
+  
+        /**
+        * Add a listener for AUTH_FAILED event.
+        */
+        assetBrowser.on(AdobeAssetBrowser.Event.AUTH_FAILED, (err) => {
+          console.log("AUTH FAILED", err);
+  
+          const refreshedToken = config.refreshToken;
+  
+          assetBrowser.updateToken(refreshedToken);
+        });
+  
+        /**
+         * Add a listener for CLOSE event.
+         */
+        assetBrowser.on(AdobeAssetBrowser.Event.CLOSE, () => {
+          console.log("Modal is closed!");
+        });
+  
+        /**
+         * Add a listener for CLOSE event.
+         */
+        assetBrowser.on(AdobeAssetBrowser.Event.LOGOUT, () => {
+          console.log("User is signed out!");
+        });
+  
+        assetBrowser.on(AdobeAssetBrowser.Event.PICK, async (data) => {
+          console.log('User selected elements: ', data);
+  
+          const renditions = await Promise.all(data.map(element => {
+            const representation = assetBrowser.getPrimaryRepresentation(element.representations);
+            if (representation) {
+              const imageResponse = assetBrowser.fetchRepresentationOrRendition(
+                representation.storage_href,
+                representation.type,
+                200,
+              );
+              return imageResponse;
+            }
+            return '';
+          }));
+        });
+  
+        return assetBrowser;
+      }
+      const ADOBE_ASSET_BROWSER_CONFIGURATION_DEFAULT = {
+        accessToken: 'eyJhbGciOiJSUzI1NiIsIng1dSI6Imltc19uYTEta2V5LWF0LTEuY2VyIiwia2lkIjoiaW1zX25hMS1rZXktYXQtMSIsIml0dCI6ImF0In0.eyJpZCI6IjE2NTUxMTAzMzY5MzRfODZjZDk4YWUtYTE3Mi00ZWM1LWEwMDAtNDdmMjhiNGFiYjk1X3VlMSIsInR5cGUiOiJhY2Nlc3NfdG9rZW4iLCJjbGllbnRfaWQiOiI1MzBkNTY1ZmQ0Njg0NjQzYWJmNDIyMzYzZWIxZDVkZiIsInVzZXJfaWQiOiI2REJEQjQxQTU5NTYxNzZCMEE0OTVEMUVAYWRvYmUuY29tIiwic3RhdGUiOiJiMmQxZTEyYi0xNzYwLTQwZjUtOWJhZC02M2YyOGNkNTMwOGMiLCJhcyI6Imltcy1uYTEiLCJhYV9pZCI6IjZEQkRCNDFBNTk1NjE3NkIwQTQ5NUQxRUBhZG9iZS5jb20iLCJjdHAiOjIsImZnIjoiV1FVWElMTjRYUE43SUhVS0dNUUZTN1FBQk09PT09PT0iLCJzaWQiOiIxNjU1MTEwMzI2NzY1XzQ1M2I2OGUxLTY5ZDItNDI4OC1hYzA3LTdiODNhMWVkNTEwZV91ZTEiLCJtb2kiOiI3ZTE3M2E1IiwicGJhIjoiIiwiZXhwaXJlc19pbiI6Ijg2NDAwMDAwIiwic2NvcGUiOiJvcGVuaWQsY3JlYXRpdmVfc2RrLHByb2ZpbGUsYWRkcmVzcyxBZG9iZUlELGVtYWlsIiwiY3JlYXRlZF9hdCI6IjE2NTUxMTAzMzY5MzQifQ.HbLIu8qXbB7cdR_TzU96cCPjZwZMRN97CbvQ_Whk1WtvIMLvtoqNvBPKj_I6bwHC_o75UCahacIu1lsc42BevVjIsqpns3IL4LT_FMcHpMLCTb85CO18I1Hfig1_IsCdUfsShC9v1fnXqtUtauBc2iwrkiEgld0JhK75iohU06M0GrWzOTskMe7_hIxjeWYrPfDWXZkFVOZZO_6L_voM7JR1m4iSDvf7rYVa7lHzSiENdKHUEZO9_roVuDASU_7FZ9FBA_4gNOH5DhOOnjSK3JQYedgAnxK8uKe6EaH2N05XGg9XDqZXggyUMek7VO1CnNvv9O0pOQYm_8kd2WMA3w',
+        refreshToken: 'eyJhbGciOiJSUzI1NiIsIng1dSI6Imltc19uYTEta2V5LWF0LTEuY2VyIiwia2lkIjoiaW1zX25hMS1rZXktYXQtMSIsIml0dCI6ImF0In0.eyJpZCI6IjE2NTUxMTAzMzY5MzRfODZjZDk4YWUtYTE3Mi00ZWM1LWEwMDAtNDdmMjhiNGFiYjk1X3VlMSIsInR5cGUiOiJhY2Nlc3NfdG9rZW4iLCJjbGllbnRfaWQiOiI1MzBkNTY1ZmQ0Njg0NjQzYWJmNDIyMzYzZWIxZDVkZiIsInVzZXJfaWQiOiI2REJEQjQxQTU5NTYxNzZCMEE0OTVEMUVAYWRvYmUuY29tIiwic3RhdGUiOiJiMmQxZTEyYi0xNzYwLTQwZjUtOWJhZC02M2YyOGNkNTMwOGMiLCJhcyI6Imltcy1uYTEiLCJhYV9pZCI6IjZEQkRCNDFBNTk1NjE3NkIwQTQ5NUQxRUBhZG9iZS5jb20iLCJjdHAiOjIsImZnIjoiV1FVWElMTjRYUE43SUhVS0dNUUZTN1FBQk09PT09PT0iLCJzaWQiOiIxNjU1MTEwMzI2NzY1XzQ1M2I2OGUxLTY5ZDItNDI4OC1hYzA3LTdiODNhMWVkNTEwZV91ZTEiLCJtb2kiOiI3ZTE3M2E1IiwicGJhIjoiIiwiZXhwaXJlc19pbiI6Ijg2NDAwMDAwIiwic2NvcGUiOiJvcGVuaWQsY3JlYXRpdmVfc2RrLHByb2ZpbGUsYWRkcmVzcyxBZG9iZUlELGVtYWlsIiwiY3JlYXRlZF9hdCI6IjE2NTUxMTAzMzY5MzQifQ.HbLIu8qXbB7cdR_TzU96cCPjZwZMRN97CbvQ_Whk1WtvIMLvtoqNvBPKj_I6bwHC_o75UCahacIu1lsc42BevVjIsqpns3IL4LT_FMcHpMLCTb85CO18I1Hfig1_IsCdUfsShC9v1fnXqtUtauBc2iwrkiEgld0JhK75iohU06M0GrWzOTskMe7_hIxjeWYrPfDWXZkFVOZZO_6L_voM7JR1m4iSDvf7rYVa7lHzSiENdKHUEZO9_roVuDASU_7FZ9FBA_4gNOH5DhOOnjSK3JQYedgAnxK8uKe6EaH2N05XGg9XDqZXggyUMek7VO1CnNvv9O0pOQYm_8kd2WMA3w',
+        clientId: '3b5bb3d71d8d43079ed59fad42170d45',
+        // redirectUrl,
+        maxSelectable: 2,
+        showCategories: [
+          AdobeAssetBrowser.Category.GRAPHIC,
+          AdobeAssetBrowser.Category.COLORS,
+          AdobeAssetBrowser.Category.CHARACTER_STYLE,
+        ],
+        showCategoryHeader: false,
+        availableFonts: "",
+      }
+  
+      createAdobeAssetBrowser(ADOBE_ASSET_BROWSER_CONFIGURATION_DEFAULT);
+
+    </script>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.

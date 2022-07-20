@@ -9,9 +9,7 @@ export default () => {
   const {setUserDetails} = React.useContext(UserContext);
     return (
       <nav className="top-nav">
-        <Button onClick={() => setUserDetails({
-    username: "John Doe1"
-  })}>
+        <Button onClick={() => setUserDetails({ username: Math.random() })}>
           TEST1234
         </Button>
       </nav>
