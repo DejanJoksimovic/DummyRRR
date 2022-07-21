@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { pure } from 'recompose';
 
-export default pure(({test}) => {
+export default ({test}) => {
     console.log('rerender Dummy')
     const [y, setY] = useState(2);
     return (
@@ -10,4 +9,4 @@ export default pure(({test}) => {
         {test}
         {y}
     </div>);
-});
+};
