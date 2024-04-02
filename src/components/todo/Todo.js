@@ -1,57 +1,22 @@
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux'
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField'
-import SomeComponent from '../SomeComponent'
-import { loadTodo, clearTodo } from '../../Actions/Actions';
+import React from 'react';
+import { useHistory } from 'react-router';
+import MenuItem from '@material-ui/core/MenuItem';
+import { shoppingListRoutePath } from '../shoppingList/ShoppingList';
 
 export const Todo = () => {
-    const todo = useSelector(state => state.todo);
-    const [something, setSomething] = useState(1);
-    const dispatch = useDispatch();
+    const history = useHistory();
+    const randomNumber = Math.random()*10
+    const navigateTo = route => () => history.push(route);
+    const replace = () => history.replace({ pathname: shoppingListRoutePath, state:{number: randomNumber}});
+    const back = () => history.goBack();
     return (
         <>
-        <Button variant="contained" color="primary" onClick={() => setSomething(something + 1)}>
-            change State Of Todo
-        </Button>
-        {something}
-        <SomeComponent />
-            <Button variant="contained" color="primary" onClick={() => dispatch(loadTodo())}>
-                Make api call
-            </Button>
-            <Button variant="contained" color="primary" onClick={() => dispatch(clearTodo())}>
-                Clear State
-            </Button>
-            <div>&nbsp;</div>
-            <div>&nbsp;</div>
-            TODO:
-            <div>&nbsp;</div>
-            {todo && <div>
-                <div>
-                    <TextField
-                        label='Id'
-                        value={todo.id}
-                    />
-                </div>
-                <div>
-                    <TextField
-                        label='User Id'
-                        value={todo.userId}
-                    />
-                </div>
-                <div>
-                    <TextField
-                        label='Title'
-                        value={todo.title}
-                    />
-                </div>
-                {/* <div>
-                    <TextField
-                        label='Urgent'
-                        value={todo.urgent}
-                    />
-                </div> */}
-            </div>}
+        <MenuItem onClick={back}>BACK</MenuItem>
+        <MenuItem onClick={navigateTo(shoppingListRoutePath)}>go to shopping list</MenuItem>
+        <MenuItem onClick={() => {
+            replace()
+            navigateTo(shoppingListRoutePath)()
+          }}>Add random number and go to shopping list</MenuItem>
         </> 
     );
 }

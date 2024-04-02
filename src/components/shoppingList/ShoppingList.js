@@ -1,49 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Button, FormControlLabel, Checkbox } from '@material-ui/core';
-import { loadShoppingList, clearShoppingList } from '../../Actions/Actions';
+import React from 'react';
+import { useHistory } from 'react-router';
+import { useLocation } from "react-router-dom";
+import MenuItem from '@material-ui/core/MenuItem';
+import { todoRoutePath } from '../todo/Todo';
 
 export const ShoppingList = () => {
-
-    const dispatch = useDispatch()
-    const shoppingList = useSelector(state => state.shoppingList);
-    const [shoppingListLocal, setShoppingListLocal] = useState(shoppingList);
-
-    useEffect(() => {
-      setShoppingListLocal(shoppingList)
-    }, [shoppingList])
-    const handleChange = shoppingItemValue => () => {
-      setShoppingListLocal(shoppingListLocal.reduce((acc, curr) => {
-        const item = (curr.value === shoppingItemValue) ? {value: shoppingItemValue, checked: !curr.checked } : curr;
-        return [...acc, item];
-      }, []))
-    }
-
-    const renderShoppingItem = shoppingItem => {
-      const {value, checked} = shoppingItem;
-      return (<div key={value}>
-        <FormControlLabel
-        control={
-          <Checkbox
-            checked={checked}
-            onChange={handleChange(value)}
-            value={value}
-          />
-        }
-        label={value}
-      />
-      </div>);
-    }
+    const {state: { number } = {}} = useLocation();
+    
+    const history = useHistory();
+    const randomNumber = Math.random()*10
+    const navigateTo = route => () => history.push(route);
+    const replace = () => history.replace({ pathname: shoppingListRoutePath, state:{number: randomNumber}});
+    const back = () => history.goBack();
 
     return (
         <>
-           <Button variant="contained" color="primary" onClick={() => dispatch(loadShoppingList())}>
-                Make api call
-            </Button>
-            <Button variant="contained" color="primary" onClick={() => dispatch(clearShoppingList())}>
-                Clear State
-            </Button>
-          {shoppingListLocal && shoppingListLocal.map(shoppingItem => renderShoppingItem(shoppingItem))}
+          <MenuItem onClick={back}>BACK</MenuItem>
+          <MenuItem onClick={navigateTo(todoRoutePath)}>go to TODO</MenuItem>
+          <MenuItem onClick={() => {
+            replace()
+            navigateTo(todoRoutePath)()
+          }}>Add random number and go to TODO</MenuItem>
+          {number}
         </>
     );
 }
