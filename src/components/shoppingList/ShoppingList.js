@@ -1,17 +1,16 @@
 import React from 'react';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 import { useLocation } from "react-router-dom";
 import MenuItem from '@material-ui/core/MenuItem';
 import { todoRoutePath } from '../todo/Todo';
 
 export const ShoppingList = () => {
-    const {state: { number } = {}} = useLocation();
-    
-    const history = useHistory();
+    const {state} = useLocation();
+    const navigate = useNavigate();
     const randomNumber = Math.random()*10
-    const navigateTo = route => () => history.push(route);
-    const replace = () => history.replace({ pathname: shoppingListRoutePath, state:{number: randomNumber}});
-    const back = () => history.goBack();
+    const navigateTo = route => () => navigate(route);
+    const replace = () => navigate(shoppingListRoutePath, {state:{number: randomNumber}, replace: true});
+    const back = () => navigate(-1);
 
     return (
         <>
@@ -21,7 +20,7 @@ export const ShoppingList = () => {
             replace()
             navigateTo(todoRoutePath)()
           }}>Add random number and go to TODO</MenuItem>
-          {number}
+          {state?.number}
         </>
     );
 }

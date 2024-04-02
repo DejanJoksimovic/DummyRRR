@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from "react-dom";
 import { applyMiddleware, combineReducers, createStore, compose } from 'redux';
 import { Provider } from 'react-redux';
-import {Redirect, Route, Switch, BrowserRouter} from 'react-router-dom';
+import {Route, Routes, BrowserRouter} from 'react-router-dom';
 import thunkMiddleware from 'redux-thunk';
 
 import { todo } from './reducers/Todo';
@@ -35,21 +35,14 @@ ReactDOM.render(
             <Typography variant="h4" component="h1" gutterBottom>
                 Demo App
             </Typography>
-            <Switch>
-                <Route exact path={navigationRoutePath} component={Navigation} />
-                <Route exact path="/MemoExample" component={MemoParrentExample} />
-                <Route exact path="/CallbackExample" component={CallbackExample} />
-                <Route exact path="/SeparateContextsExample" component={SeparateContextsExample} />
-                <Route path={'/app/(todo|shoppingList)'} render={() => (
-                    <Switch>
-                        <Route exact path={todoRoutePath} component={Todo} />
-                        <Route exact path={shoppingListRoutePath} component={ShoppingList} />
-                    </Switch>
-                )} />
-                <Route path="/" render={() => (
-                    <Redirect to={navigationRoutePath} />
-                )} />
-            </Switch>
+            <Routes>
+                <Route exact path={navigationRoutePath} Component={Navigation} />
+                <Route exact path="/MemoExample" Component={MemoParrentExample} />
+                <Route exact path="/CallbackExample" Component={CallbackExample} />
+                <Route exact path="/SeparateContextsExample" Component={SeparateContextsExample} />
+                <Route exact path={todoRoutePath} Component={Todo} />
+                <Route exact path={shoppingListRoutePath} Component={ShoppingList} />
+            </Routes>
         </BrowserRouter>
     </Provider>,
     document.getElementById('root')
