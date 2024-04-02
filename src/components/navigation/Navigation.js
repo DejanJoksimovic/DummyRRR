@@ -14,8 +14,8 @@ export const Navigation = () => {
 
         return (
             <MenuList>
-                <MenuItem onClick={navigateTo(todoRoutePath)}>First demo page</MenuItem>
-                <MenuItem onClick={navigateTo(shoppingListRoutePath)}>Second demo page</MenuItem>
+                <MenuItem onClick={navigateTo(todoRoutePath)}>go to Todo</MenuItem>
+                <MenuItem onClick={navigateTo(shoppingListRoutePath)}>go to Shopping list</MenuItem>
             </MenuList>
         );
 }

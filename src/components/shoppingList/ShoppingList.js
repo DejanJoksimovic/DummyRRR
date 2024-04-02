@@ -10,7 +10,7 @@ export const ShoppingList = () => {
     const history = useHistory();
     const randomNumber = Math.random()*10
     const navigateTo = route => () => history.push(route);
-    const replace = () => history.replace({ pathname: shoppingListRoutePath, state:{number: randomNumber}});
+    const replace = () => alert(randomNumber) || history.replace({ pathname: shoppingListRoutePath, state:{number: randomNumber}});
     const back = () => history.goBack();
 
     return (
