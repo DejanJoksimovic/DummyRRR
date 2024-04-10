@@ -10,7 +10,7 @@ export const Todo = () => {
     const history = useHistory();
     const randomNumber = Math.random()*10
     const navigateTo = route => () => history.push(route);
-    const replace = () => alert(randomNumber) || history.replace({ pathname: shoppingListRoutePath, state:{number: randomNumber}});
+    const replace = () => alert(randomNumber) || history.replace({ pathname: todoRoutePath, state:{number: randomNumber}});
     const back = () => dispatch({ type: SET_TODO, payload: { todo: randomNumber }}) && history.goBack();
     return (
         <>
