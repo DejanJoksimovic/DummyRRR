@@ -11,16 +11,18 @@ export const Todo = () => {
     const randomNumber = Math.random()*10
     const navigateTo = route => () => history.push(route);
     const replace = () => alert(randomNumber) || history.replace({ pathname: todoRoutePath, state:{number: randomNumber}});
-    const back = () => dispatch({ type: SET_TODO, payload: { todo: randomNumber }}) && history.goBack();
+    const backAndSendData = () => dispatch({ type: SET_TODO, payload: { todo: randomNumber }}) && history.goBack();
+    const back = () => history.goBack();
     return (
         <>
         <MenuItem onClick={back}>BACK</MenuItem>
+        <MenuItem onClick={backAndSendData}>BACK AND SEND DATA</MenuItem>
         <MenuItem onClick={navigateTo(shoppingListRoutePath)}>go to shopping list</MenuItem>
         <MenuItem onClick={() => {
             replace()
             navigateTo(shoppingListRoutePath)()
           }}>Add random number and go to shopping list</MenuItem>
-        </> 
+        </>
     );
 }
 
