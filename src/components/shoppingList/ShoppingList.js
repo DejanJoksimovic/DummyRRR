@@ -20,7 +20,7 @@ export const ShoppingList = () => {
     useEffect(()=> {
       if (data) {
         alert(data)
-        dispatch({ type: SET_TODO, payload: { todo: null }})
+        dispatch({ type: SET_TODO, payload: { todo: null }}) // comment this
         history.replace({ pathname: shoppingListRoutePath, state:{number: data}})
       }
     }, [])
