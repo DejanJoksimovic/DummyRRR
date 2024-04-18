@@ -11,9 +11,9 @@ import { SET_TODO } from '../../Actions/ActionsTypes';
 
 export const Navigation = () => {
     const dispatch = useDispatch()
-    const counter = useSelector(state => state.todo)
+    const data = useSelector(state => state.todo)
     useEffect(()=> {
-        if (counter) {
+        if (data) {
           dispatch({ type: SET_TODO, payload: { todo: null }})
         }
       }, [])

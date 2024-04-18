@@ -10,7 +10,7 @@ import { SET_TODO } from '../../Actions/ActionsTypes';
 export const ShoppingList = () => {
     const dispatch = useDispatch()
     const {state: { number } = {}} = useLocation();
-    const counter = useSelector(state => state.todo)
+    const data = useSelector(state => state.todo)
     const history = useHistory();
     const randomNumber = Math.random()*10
     const navigateTo = route => () => history.push(route);
@@ -18,10 +18,10 @@ export const ShoppingList = () => {
     const back = () => history.goBack();
 
     useEffect(()=> {
-      if (counter) {
-        alert(counter)
+      if (data) {
+        alert(data)
         dispatch({ type: SET_TODO, payload: { todo: null }})
-        history.replace({ pathname: shoppingListRoutePath, state:{number: counter}})
+        history.replace({ pathname: shoppingListRoutePath, state:{number: data}})
       }
     }, [])
 
